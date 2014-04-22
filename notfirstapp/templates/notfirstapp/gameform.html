@@ -1,0 +1,22 @@
+{%extends 'notfirstapp/base.html'%}
+{%block content%}
+
+<div id='formblock'>
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        
+
+        <input type="submit" value="Create" />
+        <a class='alpha two columns' 
+            href='{% url 'ImageFormPage' %}?back={{ current_path }}'>Upload New Image</a>
+    </form>
+<div>
+<style type="text/css">
+	#formblock{
+		padding-top: 10em;
+		padding-left: 3em;
+	}
+
+</style>
+
+{%endblock%}

@@ -1,0 +1,30 @@
+{%extends 'notfirstapp/base.html'%}
+    <!-- List of uploaded documents -->
+    {%block content%}
+
+    <div id="imageuploadform">
+        {% if uploaded %}
+        <ul>
+        {% for uploadimg in uploaded %}
+            <li><a href="/notfirstapp{{ uploadimg.imagefile.url }}">{{ uploadimg.imagefile.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No image.</p>
+    {% endif %}
+
+        <!-- Upload form. Note enctype attribute! -->
+        <form action="{% url 'ImageFormPage' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{ form.as_ul }}
+            <p><input type="submit" value="Upload" /></p>
+        </form>
+    </div>
+
+    <style type="text/css">
+        #imageuploadform{
+            padding-top: 8em;   
+            padding-left: 3em;
+        }
+    </style>
+    {%endblock%}

@@ -1,0 +1,11 @@
+{% if current_game %}
+	<h1>Game List</h1>
+    <ul>
+    {% for p in current_game %}
+        <li><a href={% url 'DetailPage' p.id%}>{{p}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Contact for now.</p>
+{% endif %}
+<p><a href={% url 'CreatePage'%}>Create new contact</a></p>

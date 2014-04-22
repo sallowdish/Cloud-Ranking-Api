@@ -1,0 +1,3 @@
+DB update log:
+	rename the attribute in TimeRank and ScoreRank tables
+	add achieve time column to both timerank and scorerank table

@@ -1,0 +1,8 @@
+{% if game_list %}
+    {% for game in game_list %}
+    	<!-- {% if game %} -->
+            <li>{{game.gamename}}</li>
+            <li>{{game.createTime}}</li>
+    {%endfor%}
+{%endif%}
+

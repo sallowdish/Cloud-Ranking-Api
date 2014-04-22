@@ -1,0 +1,4 @@
+DB update log:
+	rename the Rank table with Account
+	merge the necessary info into TimeTank and ScoreRank
+	fix typo

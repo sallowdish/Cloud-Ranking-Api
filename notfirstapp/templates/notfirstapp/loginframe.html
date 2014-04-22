@@ -1,0 +1,95 @@
+{%extends 'notfirstapp/base.html'%}
+{%load staticfiles%}
+
+
+{%if user.is_anonymous%}
+	{%block content%}}
+	<!DOCTYPE html>
+	<div id="loginView">
+	<head>
+
+		<!-- Basics -->
+		
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		
+		<title>Login</title>
+
+		<!-- CSS -->
+		
+		<link rel="stylesheet" href={%static 'notfirstapp/css/reset.css'%}>
+		<link rel="stylesheet" href={%static 'notfirstapp/css/animate.css'%}>
+		<link rel="stylesheet" href={%static 'notfirstapp/css/styles.css'%}>
+		
+	</head>
+
+		<!-- Main HTML -->
+		
+	<body>
+		
+		<!-- Begin Page Content -->
+		
+		<div id="container">
+
+		{% if form.errors %}
+		<p>Your username and password didn't match. Please try again. {{form.errors}}</p>
+		{% endif %}
+			
+			<form action={% url 'django.contrib.auth.views.login' %} method="post">
+				{% csrf_token %}
+			
+			<label for="name">Username:</label>
+			
+			<input type="name" id='id_username' name='username'>
+			
+			<label for="username">Password:</label>
+			
+			<p><a href="#">Forgot your password?</a>
+			
+			<input type="password" id='id_password' name='password'>
+			
+			<div id="lower">
+			
+			<input type="checkbox"><label class="check" for="checkbox">Keep me logged in</label>
+			
+			<input type='button' value='SignUp' onclick="location.href='{%url 'SignUpPage'%}'">
+			<input type="submit" value="LogIn">
+			<input type="hidden" name="next" value="{{ next }}" />
+			
+			</div>
+			
+			</form>
+					<p>ray:1 for testing</p>
+		</div>
+		
+		
+		<!-- End Page Content -->
+		
+	</body>
+	</div>
+	<style type="text/css">
+		#loginView{
+
+			padding-top: 10em;
+		}
+	</style>
+
+	{%if alert%}
+	<script type="text/javascript">
+		alert('{{alert}}');
+	</script>
+	{%endif%}
+	{%endblock content%}
+
+{%else%}
+
+{%endif%}
+
+
+	
+	
+	
+	
+	
+		
+	

@@ -1,0 +1,29 @@
+{%extends "notfirstapp/base.html"%}
+{%load staticfiles%}
+{%block content%}
+<div id="gameinfo">
+	{% if game %}
+        <img id="gameposter" src="/{{appname}}{{game.fk_image.imagefile.url}}" alt={{game.fk_image.imagefile.name}}>
+
+        <p>{{game.gamename}}</p>
+        <p>{{game.createTime}}</p>
+    {% else %}
+        <p>No Game.</p>
+    {% endif %}
+</div>
+<div>
+	
+	<a href="{{back_url}}">BACK</a>
+</div>
+<style type="text/css">
+	#gameinfo{
+		padding-top: 8em;
+	}
+	#gameposter{
+		height: 100px;
+		width: 100px;
+		margin-bottom: 2em;
+	}
+</style>
+    
+{%endblock%}

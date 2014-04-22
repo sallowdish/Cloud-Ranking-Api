@@ -1,0 +1,4 @@
+DB update log:
+	fix the logic error between Game and Ranking table
+	add new table: Figure
+	add the relationship between Figure and Ranking.

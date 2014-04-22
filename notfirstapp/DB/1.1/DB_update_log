@@ -1,0 +1,4 @@
+DB update log:
+	rename the People table with Account
+	remove the Player and Gameowner table
+	merge the necessary info into Account, Play and Own tables

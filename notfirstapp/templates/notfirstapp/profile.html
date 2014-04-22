@@ -1,0 +1,17 @@
+{%extends 'notfirstapp/base.html'%}
+
+{%block content%}
+<div id="userinfocontainer">
+	{%if user.is_authenticated%}}
+	<h2> Welcome</h2>
+
+	<ul>{{user.username}}</ul>
+	<ul>{{user.email}}</ul>
+	{{%endif%}
+</div>
+<style type="text/css">
+	#userinfocontainer{
+		padding-top: 10em;
+	}
+</style>
+{%endblock%}

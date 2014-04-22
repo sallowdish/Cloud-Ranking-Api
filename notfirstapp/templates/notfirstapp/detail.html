@@ -1,0 +1,14 @@
+{% if current_game %}
+	<h1>Game List Detail</h1>
+    <h3>Game Name:</h3>
+    	<ul><p>&#09 {{current_game.gamename}}</p></ul>
+    <h3>Created Time:</h3>
+        <ul><p>&#09 {{current_game.createTime}}</p></ul>
+    <h3>Players:</h3>
+        {% for player in current_players %}
+            <ul><p>&#09 {{player.Account_id}} as {{player.Figure_id}}</p></ul>
+        {% endfor %}
+{% else %}
+    <p>No Contact for now.</p>
+{% endif %}
+<p><a href={% url 'index' %}>back to list</a></p>
