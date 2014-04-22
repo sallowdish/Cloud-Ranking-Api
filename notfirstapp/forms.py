@@ -69,12 +69,9 @@ class PlayForm(forms.ModelForm):
         model=Play
 
 class ScoreRankForm(forms.ModelForm):
-    username=models.CharField(max_length=50)
-    playername=models.CharField(max_length=50)
-    gamename=models.CharField(max_length=50)
+    # username=models.CharField(max_length=50)
+    # playername=models.CharField(max_length=50)
+    # gamename=models.CharField(max_length=50)
     class Meta:
         model=ScoreRank
         exclude=['rank']
-
-    def save(self):
-        newRank=ScoreRank

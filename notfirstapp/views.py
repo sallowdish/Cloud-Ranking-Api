@@ -1,4 +1,5 @@
 from django.shortcuts import render,render_to_response,get_object_or_404,get_list_or_404
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse,QueryDict,HttpResponseRedirect
@@ -8,6 +9,7 @@ from django.views import generic
 from django.contrib.auth.models import User
 from notfirstapp.models import *
 from .forms import *
+import json
 # Create your views here.
 class IndexView(ListView):
 	# current_game=Game.objects.all()
@@ -100,6 +102,29 @@ class ScoreRankView(ListView):
 
     context_object_name='rank_list'
 
+    # def post(self, request, *args, **kwargs):
+    #     postdata=self.request.POST
+    #     import pdb
+    #     pdb.set_trace();
+    #     jsondata=json.load(postdata)
+    #     data['Game_id']=get_object_or_404(Game,id=self.kwargs['pk'])
+    #     data['Figure_id']=Figure_id(name=jsondata['figure'],User_id=get_object_or_404(User,username=jsondata['username']))
+    #     date['score']=jsondata['score']
+    #     pdb.set_trace();
+    #     form=ScoreRankForm(data)
+    #     pdb.set_trace();
+
+    #     if form.is_valid():
+    #     # newGame=Game(gamename=form.data[''])
+    #         return self.form_valid(form)
+    #     else:
+    #         return self.form_invalid(form)
+
+
+    def form_valid(self,form):
+        pdb.set_trace();
+        form.save();
+
     def get_context_data(self, **kwargs):
         gameid=self.kwargs['pk']
         game=get_object_or_404(Game,pk=gameid)
@@ -131,7 +156,6 @@ class GameCreateView(CreateView):
      #    form = self.get_form(self.form_class)
      #    targetID=request.POST['fk_image']
      #    form.instance.fk_image=Image.objects.get(id=targetID)
-
         form=self.form_class(request.POST)
 
         if form.is_valid():
@@ -154,6 +178,8 @@ class GameCreateView(CreateView):
         return form
 
     def get_context_data(self, **kwargs):
+        import pdb
+        pdb.set_trace();
         context = super(GameCreateView, self).get_context_data(**kwargs)
         context['current_path'] = self.request.get_full_path()
 #        import pdb;pdb.set_trace()
@@ -215,23 +241,33 @@ class ImageListView(ListView):
     template_name = 'notfirstapp/imagelist.html'
     context_object_name = 'imagelist'
     queryset = Image.objects.all()
-    # if request.method == 'POST':
-    #     form = ImageForm(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         newimage = Image(imagefile = request.FILES['imagefile'])
-    #         newimage.save()
 
-    #         # Redirect to the document list after POST
-    #         return HttpResponseRedirect(reverse('notfirstapp.views.ImageListContoller'))
-    # else:
-    #     form = ImageForm() # A empty, unbound form
+@csrf_exempt
+def ScoreRankApiView(request,pk):
+    if request.method=='POST':
+        postdata=request.body
+        # import pdb
+        # pdb.set_trace();
+        jsondata=json.loads(postdata)
+        data={}
+        data['Game_id']=get_object_or_404(Game,id=pk).id
+        user=get_object_or_404(User,username=jsondata['username'])
+        figure=Figure(name=jsondata['figure'],User_id=user)
+        figure.save();
+        figure=figure.id;
+        data['Figure_id']=figure
+        data['score']=jsondata['score']
+        # pdb.set_trace();
+        form=ScoreRankForm(data)
+        # import pdb
+        # pdb.set_trace();
 
-    # # Load documents for the list page
-    # images = Image.objects.all()
+        if form.is_valid():
+        # newGame=Game(gamename=form.data[''])
+            newRank=form.save();
+            return HttpResponse(reverse('ScoreRankPage',kwargs={'pk': data['Game_id']}), status=201)
+        else:
+            return HttpResponse('Bad Request', status=400)
+    else:
+        return HttpResponse('Forbiden.',status=403)
 
-    # # Render list page with the documents and the form
-    # return render_to_response(
-    #     'notfirstapp/imagelist.html',
-    #     {'Images': images, 'form': form},
-    #     context_instance=RequestContext(request)
-    # )
