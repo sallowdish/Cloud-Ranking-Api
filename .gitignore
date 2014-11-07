@@ -1,1 +1,16 @@
+#no compiled file
 *.pyc
+
+#no platform dependent file
+settings.py
+wsgi.py
+
+#no database migration file
+migrations
+
+#no static
+static
+!notfirstapp/static
+
+#no DS_Store
+.DS_Store

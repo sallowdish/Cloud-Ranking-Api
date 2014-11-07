@@ -178,8 +178,8 @@ class GameCreateView(CreateView):
         return form
 
     def get_context_data(self, **kwargs):
-        import pdb
-        pdb.set_trace();
+        # import pdb
+        # pdb.set_trace();
         context = super(GameCreateView, self).get_context_data(**kwargs)
         context['current_path'] = self.request.get_full_path()
 #        import pdb;pdb.set_trace()
@@ -246,8 +246,6 @@ class ImageListView(ListView):
 def ScoreRankApiView(request,pk):
     if request.method=='POST':
         postdata=request.body
-        # import pdb
-        # pdb.set_trace();
         jsondata=json.loads(postdata)
         data={}
         data['Game_id']=get_object_or_404(Game,id=pk).id
@@ -265,7 +263,28 @@ def ScoreRankApiView(request,pk):
         if form.is_valid():
         # newGame=Game(gamename=form.data[''])
             newRank=form.save();
-            return HttpResponse(reverse('ScoreRankPage',kwargs={'pk': data['Game_id']}), status=201)
+            lst=ScoreRank.objects.filter(Game_id=data['Game_id']).order_by('-score')
+            for index,item in enumerate(lst):
+                item.rank=index+1
+                item.save();
+            # position=toplist.index(newRank)
+            lst=ScoreRank.objects.filter(Game_id=data['Game_id']).order_by('-score')
+            newRank=get_object_or_404(ScoreRank,id=newRank.id)
+            if len(lst)>5:
+                lst=lst[:5]
+            toplist=[]
+            for rank in lst:
+                dic={}
+                dic['figure']=rank.Figure_id.name;
+                dic['score']=rank.score;
+                dic['time']=rank.achieveTime.strftime("%Y-%m-%d %H:%M:%S");
+                dic['rank']=rank.rank
+                toplist.append(dic)
+            reval={}
+            reval['position']=newRank.rank
+            reval['rank']=toplist
+            jsondata=json.dumps(reval)
+            return HttpResponse(jsondata, status=201)
         else:
             return HttpResponse('Bad Request', status=400)
     else:
